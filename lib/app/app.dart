@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
       title: 'Traveler Guide',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.system, 
+      themeMode: ThemeMode.dark, 
       initialRoute: RouteName.splash,
       onGenerateRoute: RouteGenerator.generateRoute,
       debugShowCheckedModeBanner: false,
