@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:roamsavvy/featured/splash/view/splash_view.dart';
 import 'route_name.dart';
 
 class RouteGenerator {
@@ -6,8 +7,8 @@ class RouteGenerator {
     final args = settings.arguments;
 
     switch (settings.name) {
-      // case RouteName.home:
-      //   return MaterialPageRoute(builder: (_) => const HomePage());
+      case RouteName.splash:
+        return MaterialPageRoute(builder: (_) => const SplashView());
 
       // case RouteName.food:
       //   return MaterialPageRoute(builder: (_) => const FoodPage());
