@@ -9,26 +9,39 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
       title: "Discover New Places",
       description:
           "Find amazing destinations around the world with just a few taps.",
-      animationPath: "assets/animations/food-delivery.json",
+      image: "assets/images/8.jpg",
     ),
     OnboardingContent(
       title: "Plan Your Journey",
       description: "Create personalized travel itineraries and stay organized.",
-      animationPath: "assets/animations/drink.json",
+      image: "assets/images/11.jpg",
     ),
     OnboardingContent(
       title: "Travel Like a Local",
       description:
           "Get insider tips and recommendations for an authentic experience.",
-      animationPath: "assets/animations/Fast delivery.json",
+      image: "assets/images/12.jpg",
+    ),
+    OnboardingContent(
+      title: "Travel Like a Local",
+      description:
+          "Get insider tips and recommendations for an authentic experience.",
+      image: "assets/images/14.jpg",
+    ),
+    OnboardingContent(
+      title: "Travel Like a Local",
+      description:
+          "Get insider tips and recommendations for an authentic experience.",
+      image: "assets/images/15.jpg",
     ),
   ];
 
-  OnboardingBloc() : super(const OnboardingState(0)) {
+  OnboardingBloc() : super(const OnboardingState(currentPageIndex: 0)) {
     on<OnboardingPageChanged>(_onPageChanged);
     on<OnboardingNextPage>(_onNextPage);
     on<OnboardingSkipped>(_onSkipped);
     on<OnboardingCompleted>(_onCompleted);
+    on<OnboardingPageOffsetChanged>(_onUpdateOffSet);
   }
 
   void _onPageChanged(
@@ -41,18 +54,27 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
   void _onNextPage(OnboardingNextPage event, Emitter<OnboardingState> emit) {
     if (event.currentPageIndex < event.totalPages - 1) {
       // If not on the last page, just move to the next page
-      emit(state.copyWith(currentPageIndex:event.currentPageIndex + 1));
+      emit(state.copyWith(currentPageIndex: event.currentPageIndex + 1));
     } else {
       // If on the last page, complete the onboarding
-      emit(state.copyWith());
+      emit(state.copyWith(isCompleted: true));
     }
   }
 
   void _onSkipped(OnboardingSkipped event, Emitter<OnboardingState> emit) {
-    emit(state.copyWith());
+    // Mark onboarding as completed when skipped
+    emit(state.copyWith(isCompleted: true));
   }
 
   void _onCompleted(OnboardingCompleted event, Emitter<OnboardingState> emit) {
-    emit(state.copyWith());
+    // Mark onboarding as completed
+    emit(state.copyWith(isCompleted: true));
+  }
+
+  void _onUpdateOffSet(
+    OnboardingPageOffsetChanged event,
+    Emitter<OnboardingState> emit,
+  ) {
+    emit(state.copyWith(pageOffset: event.offset));
   }
 }

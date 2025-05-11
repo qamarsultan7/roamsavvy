@@ -1,11 +1,11 @@
 class OnboardingContent {
   final String title;
   final String description;
-  final String animationPath;
+  final String image;
 
   OnboardingContent({
     required this.title,
     required this.description,
-    required this.animationPath,
+    required this.image,
   });
 }

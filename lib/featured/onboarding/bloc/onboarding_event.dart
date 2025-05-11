@@ -19,3 +19,9 @@ class OnboardingNextPage extends OnboardingEvent {
     required this.totalPages,
   });
 }
+class OnboardingPageOffsetChanged extends OnboardingEvent {
+  final double offset;
+
+  OnboardingPageOffsetChanged(this.offset);
+}
+
