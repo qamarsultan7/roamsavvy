@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:roamsavvy/featured/home/view/home_view.dart';
 import 'package:roamsavvy/featured/onboarding/view/onboarding_view.dart';
 import 'package:roamsavvy/featured/splash/view/splash_view.dart';
 import 'route_name.dart';
@@ -14,6 +15,9 @@ class RouteGenerator {
       case RouteName.onBoarding:
         return MaterialPageRoute(builder: (_) => const OnboardingView());
 
+      case RouteName.home:
+        return MaterialPageRoute(builder: (_) => const HomeView());
+
       // case RouteName.medical:
       //   return MaterialPageRoute(builder: (_) => const MedicalPage());
 
@@ -24,12 +28,11 @@ class RouteGenerator {
 
   static Route<dynamic> _errorRoute(String? routeName) {
     return MaterialPageRoute(
-      builder: (_) => Scaffold(
-        appBar: AppBar(title: const Text('Route Error')),
-        body: Center(
-          child: Text('No route defined for $routeName'),
-        ),
-      ),
+      builder:
+          (_) => Scaffold(
+            appBar: AppBar(title: const Text('Route Error')),
+            body: Center(child: Text('No route defined for $routeName')),
+          ),
     );
   }
 }

@@ -68,7 +68,7 @@ class _CustomMainButtonState extends State<CustomMainButton>
               child: Center(
                 child: Text(
                   widget.label,
-                  style: theme.textTheme.labelLarge?.copyWith(
+                  style: theme.textTheme.headlineMedium?.copyWith(
                     color: textColor,
                     fontWeight: FontWeight.bold,
                   ),
