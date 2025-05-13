@@ -1,3 +1,4 @@
+// ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:roamsavvy/featured/home/bloc/home_bloc.dart';
@@ -10,97 +11,189 @@ class LocationBottomSheet extends StatefulWidget {
 }
 
 class _LocationBottomSheetState extends State<LocationBottomSheet> {
-  final ScrollController _scrollController = ScrollController();
+  late final DraggableScrollableController _sheetController;
+  late final TextEditingController _locationController;
+  final FocusNode _focusNode = FocusNode();
+
+  // Example current location
+  final String _currentLocation = "123 Main Street, NY";
 
   @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
+  void initState() {
+    super.initState();
+    _initializeControllers();
+    _setupFocusListener();
   }
 
-  void _scrollToTop() {
-    _scrollController.animateTo(
-      0,
+  void _initializeControllers() {
+    _sheetController = DraggableScrollableController();
+    _locationController = TextEditingController();
+  }
+
+  void _setupFocusListener() {
+    _focusNode.addListener(_onFocusChange);
+  }
+
+  void _onFocusChange() {
+    if (_focusNode.hasFocus) {
+      _expandSheet();
+    }
+  }
+
+  void _expandSheet() {
+    _sheetController.animateTo(
+      0.9,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
     );
   }
 
   @override
+  void dispose() {
+    _sheetController.dispose();
+    _locationController.dispose();
+    _focusNode.removeListener(_onFocusChange);
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
-      initialChildSize: 0.2,
+      controller: _sheetController,
+      initialChildSize: 0.25,
       maxChildSize: 0.9,
       minChildSize: 0.2,
       expand: false,
+      snap: true,
+      snapSizes: const [0.25, 0.9],
       builder: (context, scrollController) {
-        _scrollController.addListener(() {
-          scrollController.position.correctBy(_scrollController.position.pixels - scrollController.position.pixels);
-        });
-        
-        return BlocBuilder<LocationBloc, LocationState>(
-          builder: (context, state) {
-            return SingleChildScrollView(
-              controller: _scrollController,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: Container(
-                        width: 50,
-                        height: 5,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      'Location Details',
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 15),
-                    
-                    if (state is LocationLoaded) ...[
-                      ListTile(
-                        leading: const Icon(Icons.location_on),
-                        title: const Text('Current Location'),
-                        subtitle: Text(state.currentLocation.address),
-                        onTap: _scrollToTop,
-                      ),
-                      const SizedBox(height: 10),
-                      
-                      ...state.savedLocations.map((location) => 
-                        ListTile(
-                          leading: const Icon(Icons.star),
-                          title: Text(location.name),
-                          subtitle: Text(location.address),
-                          onTap: () {
-                            context.read<LocationBloc>().add(SelectLocation(location));
-                            _scrollToTop();
-                            Navigator.pop(context);
-                          },
-                        )
-                      ),
-                    ] else ...[
-                      const ListTile(
-                        leading: Icon(Icons.location_on),
-                        title: Text('Loading locations...'),
-                      ),
-                    ],
-                  ],
+        return Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(50)),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: ListView(
+            controller: scrollController,
+            children: [
+              Center(
+                child: Container(
+                  width: 50,
+                  height: 5,
+                  margin: const EdgeInsets.symmetric(vertical: 16),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
               ),
-            );
-          },
+              _buildLocationWidget(),
+              const SizedBox(height: 20),
+            ],
+          ),
         );
       },
+    );
+  }
+
+  Widget _buildLocationWidget() {
+    return BlocBuilder<HomeBloc, HomeState>(
+      buildWhen: (previous, current) => previous.isEditing != current.isEditing,
+      builder: (context, state) {
+        return GestureDetector(
+          onTap: () {
+            if (!state.isEditing) {
+              _expandSheet();
+              context.read<HomeBloc>().add(ToggleIsEditingEvent());
+              // Request focus after a short delay to ensure the animation and state change have started
+              Future.microtask(() => _focusNode.requestFocus());
+            }
+          },
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            child:
+                state.isEditing
+                    ? TextField(
+                      keyboardAppearance: Theme.of(context).brightness,
+                      key: const ValueKey('textField'),
+                      controller: _locationController,
+                      focusNode: _focusNode,
+                      decoration: InputDecoration(
+                        hintText: "Enter location...",
+                        suffixIcon: IconButton(
+                          icon: const Icon(Icons.clear),
+                          onPressed: () {
+                            _locationController.clear();
+                          },
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      onSubmitted: (value) {
+                        _focusNode.unfocus();
+                        final homeBloc = context.read<HomeBloc>();
+                        homeBloc.add(ToggleIsEditingEvent());
+                        // Handle submission and toggle editing state
+                        if (value.isNotEmpty) {
+                          // Add your location saving logic here
+                        }
+                      },
+                    )
+                    : Container(
+                      key: const ValueKey('locationDisplay'),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.primary.withAlpha(50),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.location_on,
+                            color: Color(0xFF0F4C81),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              _currentLocation,
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class KeyboardDismissOnTap extends StatelessWidget {
+  final Widget child;
+
+  const KeyboardDismissOnTap({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+        final homeBloc = context.read<HomeBloc>();
+        if (homeBloc.state.isEditing) {
+          homeBloc.add(ToggleIsEditingEvent());
+        }
+      },
+
+      behavior: HitTestBehavior.translucent,
+      child: child,
     );
   }
 }

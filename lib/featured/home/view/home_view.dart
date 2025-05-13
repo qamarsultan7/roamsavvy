@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:roamsavvy/featured/home/bloc/home_bloc.dart';
 import 'package:roamsavvy/featured/home/view/widgets/location_bottom_sheet.dart';
 
 class HomeView extends StatelessWidget {
@@ -19,49 +17,67 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => LocationBloc()..add(LoadCurrentLocation()),
-      child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: BlocBuilder<LocationBloc, LocationState>(
-            builder: (context, state) {
-              return GestureDetector(
-                onTap: () => _showLocationBottomSheet(context),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
+    return Scaffold(appBar: _buildAppBar(context), body: Column(children: []));
+  }
+
+  AppBar _buildAppBar(BuildContext context) {
+    return AppBar(
+      automaticallyImplyLeading: false,
+      elevation: 0,
+      title: _buildLocationSelector(context),
+    );
+  }
+
+  Widget _buildLocationSelector(BuildContext context) {
+    return InkWell(
+      onTap: () => _showLocationBottomSheet(context),
+      borderRadius: BorderRadius.circular(12),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.location_on,
+              color: Theme.of(context).colorScheme.primary,
+              size: 22,
+            ),
+            const SizedBox(width: 8),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Current Location',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withAlpha(180),
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Row(
                   children: [
-                    const Icon(Icons.location_on, size: 18),
-                    const SizedBox(width: 4),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Text(
-                          'Current Location',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              state is LocationLoaded 
-                                ? state.currentLocation.name 
-                                : 'Loading...',
-                              style: const TextStyle(fontSize: 12),
-                            ),
-                            const Icon(Icons.arrow_drop_down, size: 16),
-                          ],
-                        ),
-                      ],
+                    Text(
+                      'New York',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_drop_down,
+                      size: 16,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                   ],
                 ),
-              );
-            },
-          ),
-          centerTitle: true,
+              ],
+            ),
+          ],
         ),
-        body: Column(children: []),
       ),
     );
   }

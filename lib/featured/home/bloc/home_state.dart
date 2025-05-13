@@ -1,57 +1,19 @@
-import 'package:equatable/equatable.dart';
+part of 'home_bloc.dart';
 
-// Location model
-class Location {
-  final String id;
-  final String name;
-  final String address;
-  
-  const Location({
-    required this.id, 
-    required this.name, 
-    required this.address
-  });
-}
+enum HomeStatus { initial, loading, loaded, error }
 
-abstract class LocationState extends Equatable {
-  const LocationState();
-  
-  @override
-  List<Object> get props => [];
-}
+class HomeState extends Equatable {
+  final bool isEditing;
+  final String currentLocation;
+  const HomeState({this.isEditing = false, this.currentLocation = ''});
 
-class LocationInitial extends LocationState {}
-
-class LocationLoading extends LocationState {}
-
-class LocationLoaded extends LocationState {
-  final Location currentLocation;
-  final List<Location> savedLocations;
-  
-  const LocationLoaded({
-    required this.currentLocation,
-    required this.savedLocations,
-  });
-  
-  @override
-  List<Object> get props => [currentLocation, savedLocations];
-  
-  LocationLoaded copyWith({
-    Location? currentLocation,
-    List<Location>? savedLocations,
-  }) {
-    return LocationLoaded(
+  HomeState copyWith({bool? isEditing, String? currentLocation}) {
+    return HomeState(
+      isEditing: isEditing ?? this.isEditing,
       currentLocation: currentLocation ?? this.currentLocation,
-      savedLocations: savedLocations ?? this.savedLocations,
     );
   }
-}
 
-class LocationError extends LocationState {
-  final String message;
-  
-  const LocationError(this.message);
-  
   @override
-  List<Object> get props => [message];
+  List<Object?> get props => [isEditing, currentLocation];
 }
