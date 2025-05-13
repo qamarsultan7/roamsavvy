@@ -12,24 +12,19 @@ class MyApp extends StatelessWidget {
       title: 'Traveler Guide',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.light,
+      themeMode: ThemeMode.dark,
       initialRoute: RouteName.onBoarding,
       onGenerateRoute: RouteGenerator.generateRoute,
       debugShowCheckedModeBanner: false,
-      // filepath: d:\Develop\Google APAC\roamsavvy\lib\app\app.dart
       builder: (context, child) {
-        // Detect screen size
         final screenWidth = MediaQuery.of(context).size.width;
-        final bool isLargeScreen = screenWidth > 600;
-
+        final bool isLargeScreen = screenWidth > 600; // for Now just Wanted it to make for Only Mobile Screen Width
         return Center(
           child: Container(
-            // Optional side padding for tablet/desktop views
             padding: EdgeInsets.symmetric(horizontal: isLargeScreen ? 16.0 : 0),
             decoration:
                 isLargeScreen
                     ? BoxDecoration(
-                      // Add subtle border or shadow on larger screens
                       boxShadow: [
                         BoxShadow(
                           color: Theme.of(context).scaffoldBackgroundColor,

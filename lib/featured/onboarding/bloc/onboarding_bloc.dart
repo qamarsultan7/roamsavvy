@@ -6,36 +6,36 @@ import 'onboarding_state.dart';
 class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
   final List<OnboardingContent> contents = [
     OnboardingContent(
-      title: "Discover New Places",
+      title: "Discover Nearby Essentials",
       description:
-          "Find amazing destinations around the world with just a few taps.",
+          "Find the best food spots and reliable medical facilities near you, wherever you are.",
       image: "assets/images/8.jpg",
     ),
     OnboardingContent(
-      title: "Plan Your Journey",
-      description: "Create personalized travel itineraries and stay organized.",
+      title: "Real Reviews from Real Travelers",
+      description:
+          "Make informed decisions with trustworthy insights from fellow travelers.",
       image: "assets/images/11.jpg",
     ),
     OnboardingContent(
-      title: "Travel Like a Local",
+      title: "Smart Location Assistance",
       description:
-          "Get insider tips and recommendations for an authentic experience.",
+          "Our app uses your location to instantly suggest nearby essentials, fast and easy.",
       image: "assets/images/12.jpg",
     ),
     OnboardingContent(
-      title: "Travel Like a Local",
+      title: "Plan Ahead with Confidence",
       description:
-          "Get insider tips and recommendations for an authentic experience.",
+          "Know where to go before you arrive—save places and build your personalized map.",
       image: "assets/images/14.jpg",
     ),
     OnboardingContent(
-      title: "Travel Like a Local",
+      title: "Travel Safer and Smarter",
       description:
-          "Get insider tips and recommendations for an authentic experience.",
+          "Stay prepared with reliable support and recommendations—right when you need them.",
       image: "assets/images/15.jpg",
     ),
   ];
-
   OnboardingBloc() : super(const OnboardingState(currentPageIndex: 0)) {
     on<OnboardingPageChanged>(_onPageChanged);
     on<OnboardingNextPage>(_onNextPage);

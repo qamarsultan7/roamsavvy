@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../widget/onboarding_page.dart';
@@ -43,11 +41,9 @@ class _OnboardingViewState extends State<OnboardingView> {
   }
 
   void _pageControllerListener() {
-    final currentPage = _pageController.page;
     final bloc = context.read<OnboardingBloc>();
     final offset = _pageController.page ?? 0.0;
     bloc.add(OnboardingPageOffsetChanged(offset));
-    log('Current page: $currentPage');
   }
 
   @override
