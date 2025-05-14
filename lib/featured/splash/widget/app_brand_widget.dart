@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+
 class AppBrandingWidget extends StatelessWidget {
   const AppBrandingWidget({super.key});
 
@@ -17,24 +17,7 @@ class AppBrandingWidget extends StatelessWidget {
             alignment: Alignment.center,
             children: [
               // App name animation
-              Positioned(
-                top: 180,
-                child: Text(
-                      'ROAMSAVVY',
-                      style: theme.textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: theme.colorScheme.onSurface,
-                      ),
-                    )
-                    .animate(delay: const Duration(seconds: 11))
-                    .fadeIn(duration: const Duration(milliseconds: 800))
-                    .slideY(
-                      begin: -0.4,
-                      end: 0.8,
-                      duration: const Duration(milliseconds: 800),
-                      curve: Curves.easeInOut,
-                    ),
-              ),
+              Positioned(top: 180, child: AnimatedLettersDrop()),
 
               // App icon animation
               Image.asset('assets/icons/app_icon1.png', width: 180, height: 180)
@@ -59,6 +42,42 @@ class AppBrandingWidget extends StatelessWidget {
             .animate(delay: const Duration(seconds: 10))
             .fadeIn(duration: const Duration(milliseconds: 800)),
       ],
+    );
+  }
+}
+
+class AnimatedLettersDrop extends StatelessWidget {
+  const AnimatedLettersDrop({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final text = 'ROAMSAVVY';
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children:
+          text.characters.toList().asMap().entries.map((entry) {
+            final index = entry.key;
+            final char = entry.value;
+
+            return Text(
+                  char,
+                  style: theme.textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: theme.colorScheme.onSurface,
+                  ),
+                )
+                .animate(delay: Duration(seconds: 11))
+                .fadeIn(duration: const Duration(milliseconds: 600))
+                .slideY(
+                  begin: -1,
+                  end: 0,
+                  delay: Duration(milliseconds: 200 * index),
+                  duration: const Duration(milliseconds: 600),
+                  curve: Curves.easeOut,
+                );
+          }).toList(),
     );
   }
 }

@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:roamsavvy/featured/home/bloc/home_bloc.dart';
+import 'package:roamsavvy/shared/components/custom_main_button.dart';
 
 class LocationBottomSheet extends StatefulWidget {
   const LocationBottomSheet({super.key});
@@ -90,6 +91,7 @@ class _LocationBottomSheetState extends State<LocationBottomSheet> {
               ),
               _buildLocationWidget(),
               const SizedBox(height: 20),
+              CustomMainButton(label: 'Use Current Location', onPressed: () {}),
             ],
           ),
         );
@@ -145,7 +147,7 @@ class _LocationBottomSheetState extends State<LocationBottomSheet> {
                       key: const ValueKey('locationDisplay'),
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16,
-                        vertical: 12,
+                        vertical: 15,
                       ),
                       decoration: BoxDecoration(
                         color: Theme.of(
@@ -172,28 +174,6 @@ class _LocationBottomSheetState extends State<LocationBottomSheet> {
           ),
         );
       },
-    );
-  }
-}
-
-class KeyboardDismissOnTap extends StatelessWidget {
-  final Widget child;
-
-  const KeyboardDismissOnTap({super.key, required this.child});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-        final homeBloc = context.read<HomeBloc>();
-        if (homeBloc.state.isEditing) {
-          homeBloc.add(ToggleIsEditingEvent());
-        }
-      },
-
-      behavior: HitTestBehavior.translucent,
-      child: child,
     );
   }
 }

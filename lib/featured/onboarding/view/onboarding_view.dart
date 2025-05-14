@@ -58,49 +58,79 @@ class _OnboardingViewState extends State<OnboardingView> {
       builder: (context, state) {
         final bloc = context.read<OnboardingBloc>();
         return Scaffold(
-          body: SafeArea(
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                return Column(
-                  children: [
-                    Stack(
+          body: Stack(
+            children: [
+              // Background image
+              Container(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/bg.jpeg'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              // Color overlay
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Color(0xFF4A90E2).withAlpha(200),
+                      Color(0xFF50E3C2).withAlpha(200),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+              ),
+              // Content
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 25),
+                    child: Column(
                       children: [
-                        SizedBox(
-                          height: constraints.maxHeight * .8,
-                          child: PageView.builder(
-                            controller: _pageController,
-                            itemCount: bloc.contents.length,
-                            physics: NeverScrollableScrollPhysics(),
-                            onPageChanged: (index) {
-                              bloc.add(OnboardingPageChanged(index));
-                            },
-                            itemBuilder: (context, index) {
-                              return OnboardingPage(
-                                content: bloc.contents[index],
-                                constraints: constraints,
-                                currentIndex: index,
-                                length: bloc.contents.length,
-                              );
-                            },
+                        Stack(
+                          children: [
+                            SizedBox(
+                              height: constraints.maxHeight * .8,
+                              child: PageView.builder(
+                                controller: _pageController,
+                                itemCount: bloc.contents.length,
+                                physics: NeverScrollableScrollPhysics(),
+                                onPageChanged: (index) {
+                                  bloc.add(OnboardingPageChanged(index));
+                                },
+                                itemBuilder: (context, index) {
+                                  return OnboardingPage(
+                                    content: bloc.contents[index],
+                                    constraints: constraints,
+                                    currentIndex: index,
+                                    length: bloc.contents.length,
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(24.0),
+                          child: CustomMainButton(
+                            label:
+                                state.currentPageIndex ==
+                                        bloc.contents.length - 1
+                                    ? "Get Started"
+                                    : "Next",
+                            onPressed:
+                                () =>
+                                    _goToNextPage(bloc, state.currentPageIndex),
                           ),
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(24.0),
-                      child: CustomMainButton(
-                        label:
-                            state.currentPageIndex == bloc.contents.length - 1
-                                ? "Get Started"
-                                : "Next",
-                        onPressed:
-                            () => _goToNextPage(bloc, state.currentPageIndex),
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
+                  );
+                },
+              ),
+            ],
           ),
         );
       },
