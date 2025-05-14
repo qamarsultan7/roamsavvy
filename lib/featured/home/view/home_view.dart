@@ -18,7 +18,66 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: _buildAppBar(context), body: Column(children: []));
+    final size = MediaQuery.of(context).size;
+    return Scaffold(
+      appBar: _buildAppBar(context),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+        child: Column(
+          children: [
+            Container(
+              margin: const EdgeInsets.only(top: 20),
+              decoration: BoxDecoration(
+                image: const DecorationImage(
+                  image: AssetImage('assets/images/bg.jpeg'),
+                  fit: BoxFit.cover,
+                ),
+                color: Theme.of(context).colorScheme.secondary,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              height: size.height * .25,
+              width: double.infinity,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.black.withOpacity(0.1),
+                      Colors.black.withOpacity(0.6),
+                    ],
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    'data',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+            Container(
+              margin: const EdgeInsets.only(top: 20),
+              decoration: BoxDecoration(),
+              height: size.height * .25,
+              width: double.infinity,
+              child: Center(
+                child: Text(
+                  'data',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   AppBar _buildAppBar(BuildContext context) {
@@ -48,7 +107,7 @@ class HomeView extends StatelessWidget {
               Text(
                 'New York',
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w700,
                   color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),

@@ -12,12 +12,15 @@ class AppBrandingWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
-          height: 250,
+          height: 220,
           child: Stack(
             alignment: Alignment.center,
             children: [
               // App name animation
-              Positioned(top: 180, child: AnimatedLettersDrop()),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: AnimatedLettersDrop(),
+              ),
 
               // App icon animation
               Image.asset('assets/icons/app_icon1.png', width: 180, height: 180)
@@ -32,7 +35,7 @@ class AppBrandingWidget extends StatelessWidget {
             ],
           ),
         ),
-
+        SizedBox(height: 10),
         Text(
               'Your travel companion',
               style: theme.textTheme.bodyMedium?.copyWith(
@@ -71,7 +74,7 @@ class AnimatedLettersDrop extends StatelessWidget {
                 .animate(delay: Duration(seconds: 11))
                 .fadeIn(duration: const Duration(milliseconds: 600))
                 .slideY(
-                  begin: -1,
+                  begin: -1.1,
                   end: 0,
                   delay: Duration(milliseconds: 200 * index),
                   duration: const Duration(milliseconds: 600),

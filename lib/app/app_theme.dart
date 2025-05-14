@@ -4,6 +4,7 @@ class AppTheme {
   static ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
     primaryColor: const Color(0xFF0F4C81),
+    fontFamily: 'OpenSans',
     scaffoldBackgroundColor: const Color(0xFFF7F9FB),
     appBarTheme: const AppBarTheme(
       backgroundColor: Color(0xFFFFFFFF),
@@ -28,6 +29,7 @@ class AppTheme {
 
   static ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
+    fontFamily: 'OpenSans',
     primaryColor: const Color(0xFF8AB4F8),
     scaffoldBackgroundColor: const Color(0xFF0D1117),
     appBarTheme: const AppBarTheme(
@@ -44,7 +46,11 @@ class AppTheme {
       error: Color(0xFFEF4444),
     ),
     textTheme: const TextTheme(
-      headlineMedium: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Color(0xFFE5E7EB)),
+      headlineMedium: TextStyle(
+        fontSize: 22,
+        fontWeight: FontWeight.bold,
+        color: Color(0xFFE5E7EB),
+      ),
       bodyLarge: TextStyle(fontSize: 16, color: Color(0xFFE5E7EB)),
       bodyMedium: TextStyle(fontSize: 14, color: Color(0xFF9CA3AF)),
     ),

@@ -16,15 +16,27 @@ class SplashView extends StatelessWidget {
     List<Offset> randomPositions = _generateRandomPositions(screenSize, random);
 
     return Scaffold(
-      body: Stack(
-        alignment: Alignment.center,
-        fit: StackFit.expand,
-        children: [
-          // 1. Animated images (background elements)
-          // 2. App branding (foreground elements)
-          const AppBrandingWidget(),
-          AnimatedImagesGrid(randomPositions: randomPositions, random: random),
-        ],
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFF4A90E2), Color(0xFF50E3C2)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: Stack(
+          alignment: Alignment.center,
+          fit: StackFit.expand,
+          children: [
+            // 1. Animated images (background elements)
+            // 2. App branding (foreground elements)
+            const AppBrandingWidget(),
+            AnimatedImagesGrid(
+              randomPositions: randomPositions,
+              random: random,
+            ),
+          ],
+        ),
       ),
     );
   }
