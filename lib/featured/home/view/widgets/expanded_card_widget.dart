@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../../shared/components/custom_main_button.dart'
+    show CustomMainButton;
+
 class RestaurantCardExpanded extends StatelessWidget {
   final double rating;
   final String address;
@@ -103,17 +106,10 @@ class RestaurantCardExpanded extends StatelessWidget {
           // Address
           Row(
             children: [
-              const Icon(
-                Icons.location_on,
-                color: Colors.black87,
-                size: 16,
-              ),
+              const Icon(Icons.location_on, color: Colors.black87, size: 16),
               const SizedBox(width: 8),
               Expanded(
-                child: Text(
-                  address,
-                  style: const TextStyle(fontSize: 14),
-                ),
+                child: Text(address, style: const TextStyle(fontSize: 14)),
               ),
             ],
           ),
@@ -121,29 +117,9 @@ class RestaurantCardExpanded extends StatelessWidget {
           const SizedBox(height: 16),
 
           // See More Button
-          Center(
-            child: ElevatedButton(
-              onPressed: () {
-                // Navigate to detail page
-              },
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Theme.of(context).primaryColor,
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-              ),
-              child: const Text(
-                'See More',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-            ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 50.0),
+            child: CustomMainButton(label: 'See More', onPressed: () {}),
           ),
         ],
       ),

@@ -1,26 +1,37 @@
 import 'package:flutter/material.dart';
+import 'collapsed_card_widget.dart';
+import 'expanded_card_widget.dart';
 
-class ExpandableCardContainer extends StatefulWidget {
-  final bool isExpanded;
-  final Widget collapsedChild;
-  final Widget expandedChild;
-  final VoidCallback onToggle;
+class ExpandableRestaurantCard extends StatefulWidget {
+  final String imageUrl;
+  final String name;
+  final double rating;
+  final String cuisine;
+  final String address;
+  final bool isOpen;
+  final int priceLevel;
+  final int deliveryTime;
 
-  const ExpandableCardContainer({
+  const ExpandableRestaurantCard({
     super.key,
-    required this.isExpanded,
-    required this.collapsedChild,
-    required this.expandedChild,
-    required this.onToggle,
+    required this.imageUrl,
+    required this.name,
+    required this.rating,
+    required this.cuisine,
+    required this.address,
+    required this.isOpen,
+    required this.priceLevel,
+    required this.deliveryTime,
   });
 
   @override
-  State<ExpandableCardContainer> createState() =>
-      _ExpandableCardContainerState();
+  State<ExpandableRestaurantCard> createState() =>
+      _ExpandableRestaurantCardState();
 }
 
-class _ExpandableCardContainerState extends State<ExpandableCardContainer>
+class _ExpandableRestaurantCardState extends State<ExpandableRestaurantCard>
     with SingleTickerProviderStateMixin {
+  bool _isExpanded = false;
   late final AnimationController _controller;
 
   @override
@@ -30,22 +41,17 @@ class _ExpandableCardContainerState extends State<ExpandableCardContainer>
       duration: const Duration(milliseconds: 300),
       vsync: this,
     );
-
-    if (widget.isExpanded) {
-      _controller.value = 1.0; // Set initial value instead of animating
-    }
   }
 
-  @override
-  void didUpdateWidget(covariant ExpandableCardContainer oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.isExpanded != oldWidget.isExpanded) {
-      if (widget.isExpanded) {
+  void _toggleExpanded() {
+    setState(() {
+      _isExpanded = !_isExpanded;
+      if (_isExpanded) {
         _controller.animateTo(1.0, curve: Curves.easeOutQuad);
       } else {
         _controller.animateTo(0.0, curve: Curves.easeInQuad);
       }
-    }
+    });
   }
 
   @override
@@ -61,14 +67,20 @@ class _ExpandableCardContainerState extends State<ExpandableCardContainer>
       child: Card(
         margin: EdgeInsets.zero,
         elevation: 8,
-        shadowColor: Colors.black38,
+        shadowColor: Theme.of(context).colorScheme.onSurface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         clipBehavior: Clip.antiAlias,
         child: GestureDetector(
-          onTap: widget.onToggle,
+          onTap: _toggleExpanded,
           child: Column(
             children: [
-              widget.collapsedChild,
+              RestaurantCardCollapsed(
+                imageUrl: widget.imageUrl,
+                name: widget.name,
+                cuisine: widget.cuisine,
+                isOpen: widget.isOpen,
+                isExpanded: _isExpanded,
+              ),
               AnimatedBuilder(
                 animation: _controller,
                 builder: (context, child) {
@@ -77,7 +89,12 @@ class _ExpandableCardContainerState extends State<ExpandableCardContainer>
                       heightFactor: _controller.value,
                       child: Opacity(
                         opacity: _controller.value,
-                        child: widget.expandedChild,
+                        child: RestaurantCardExpanded(
+                          rating: widget.rating,
+                          address: widget.address,
+                          priceLevel: widget.priceLevel,
+                          deliveryTime: widget.deliveryTime,
+                        ),
                       ),
                     ),
                   );

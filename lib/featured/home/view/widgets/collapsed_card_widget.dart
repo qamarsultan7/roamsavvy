@@ -19,7 +19,7 @@ class RestaurantCardCollapsed extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 180,
+      height: 190,
       width: double.infinity,
       decoration: BoxDecoration(
         image: DecorationImage(image: AssetImage(imageUrl), fit: BoxFit.cover),
@@ -29,7 +29,7 @@ class RestaurantCardCollapsed extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Colors.black.withAlpha(50), Colors.black.withAlpha(170)],
+            colors: [Colors.black.withAlpha(150), Colors.black.withAlpha(100)],
           ),
         ),
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -38,6 +38,7 @@ class RestaurantCardCollapsed extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
@@ -83,14 +84,14 @@ class RestaurantCardCollapsed extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     color: isOpen ? Colors.green : Colors.red,
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(7),
                   ),
                   child: Text(
                     isOpen ? 'Open' : 'Closed',
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
-                      fontSize: 12,
+                      fontSize: 15,
                     ),
                   ),
                 ),

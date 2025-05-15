@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:roamsavvy/featured/home/view/widgets/expanded_items_card.dart';
 import 'package:roamsavvy/featured/home/view/widgets/location_bottom_sheet.dart';
+import 'widgets/cover_heading_widget.dart';
+import 'widgets/expandable_card_container.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -24,58 +25,54 @@ class HomeView extends StatelessWidget {
       appBar: _buildAppBar(context),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                margin: const EdgeInsets.only(top: 20),
-                decoration: BoxDecoration(
-                  image: const DecorationImage(
-                    image: AssetImage('assets/images/bg.jpeg'),
-                    fit: BoxFit.cover,
-                  ),
-                  color: Theme.of(context).colorScheme.secondary,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                height: size.height * .25,
-                width: double.infinity,
+        child: CustomScrollView(
+          physics: const BouncingScrollPhysics(),
+          slivers: [
+            // Cover heading that scrolls away
+            SliverToBoxAdapter(child: CoverHeadingWidget(size: size)),
+
+            // Sticky header
+            SliverPersistentHeader(
+              pinned: true,
+              delegate: _StickyHeaderDelegate(
                 child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.black.withOpacity(0.1),
-                        Colors.black.withOpacity(0.6),
-                      ],
-                    ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'data',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
+                  width: double.infinity,
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Nearby Food Points',
+                    style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                   ),
                 ),
+                maxHeight: 65.0,
+                minHeight: 65.0,
               ),
-          
-              ExpandableRestaurantCard(
-                imageUrl: 'assets/images/bg.jpeg',
-                name: 'McDonald\'s',
-                rating: 4.2,
-                cuisine: 'Fast Food',
-                address: '123 Main Street, New York',
-                isOpen: true,
-                priceLevel: 1,
-                deliveryTime: 15,
-              ),
-            ],
-          ),
+            ),
+
+            // Scrollable list of restaurants
+            SliverList(
+              delegate: SliverChildBuilderDelegate((context, index) {
+                return ExpandableRestaurantCard(
+                      imageUrl: 'assets/images/image_not_available.jpeg',
+                      name: 'McDonald\'s',
+                      rating: 4.2,
+                      cuisine: 'Fast Food',
+                      address: '123 Main Street, New York',
+                      isOpen: true,
+                      priceLevel: 1,
+                      deliveryTime: 15,
+                    )
+                    .animate(delay: ((index + 1) * 50).ms)
+                    .scale(
+                      begin: const Offset(0.8, 0.8),
+                      end: const Offset(1, 1),
+                    );
+              }, childCount: 15),
+            ),
+          ],
         ),
       ),
     );
@@ -121,5 +118,40 @@ class HomeView extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+// Custom delegate for the sticky header
+class _StickyHeaderDelegate extends SliverPersistentHeaderDelegate {
+  final Widget child;
+  final double maxHeight;
+  final double minHeight;
+
+  _StickyHeaderDelegate({
+    required this.child,
+    required this.maxHeight,
+    required this.minHeight,
+  });
+
+  @override
+  Widget build(
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
+    return SizedBox(width: double.infinity, height: maxHeight, child: child);
+  }
+
+  @override
+  double get maxExtent => maxHeight;
+
+  @override
+  double get minExtent => minHeight;
+
+  @override
+  bool shouldRebuild(covariant _StickyHeaderDelegate oldDelegate) {
+    return maxHeight != oldDelegate.maxHeight ||
+        minHeight != oldDelegate.minHeight ||
+        child != oldDelegate.child;
   }
 }
