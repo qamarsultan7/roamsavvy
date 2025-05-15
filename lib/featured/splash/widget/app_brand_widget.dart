@@ -24,12 +24,12 @@ class AppBrandingWidget extends StatelessWidget {
 
               // App icon animation
               Image.asset('assets/icons/app_icon1.png', width: 180, height: 180)
-                  .animate(delay: const Duration(seconds: 10))
+                  .animate(delay: const Duration(seconds: 3))
                   .scale()
                   .slideY(
                     begin: 0.0,
                     end: -0.1,
-                    duration: const Duration(milliseconds: 800),
+                    duration: const Duration(milliseconds: 400),
                     curve: Curves.easeInOut,
                   ),
             ],
@@ -42,8 +42,8 @@ class AppBrandingWidget extends StatelessWidget {
                 color: theme.colorScheme.onSurface.withAlpha(190),
               ),
             )
-            .animate(delay: const Duration(seconds: 10))
-            .fadeIn(duration: const Duration(milliseconds: 800)),
+            .animate(delay: const Duration(seconds: 4))
+            .fadeIn(duration: const Duration(milliseconds: 400)),
       ],
     );
   }
@@ -63,7 +63,6 @@ class AnimatedLettersDrop extends StatelessWidget {
           text.characters.toList().asMap().entries.map((entry) {
             final index = entry.key;
             final char = entry.value;
-
             return Text(
                   char,
                   style: theme.textTheme.headlineSmall?.copyWith(
@@ -71,13 +70,13 @@ class AnimatedLettersDrop extends StatelessWidget {
                     color: theme.colorScheme.onSurface,
                   ),
                 )
-                .animate(delay: Duration(seconds: 11))
-                .fadeIn(duration: const Duration(milliseconds: 600))
+                .animate(delay: Duration(seconds: 3))
+                .fadeIn(duration: const Duration(milliseconds: 400))
                 .slideY(
                   begin: -1.1,
                   end: 0,
-                  delay: Duration(milliseconds: 200 * index),
-                  duration: const Duration(milliseconds: 600),
+                  delay: Duration(milliseconds: 100 * index),
+                  duration: const Duration(milliseconds: 400),
                   curve: Curves.easeOut,
                 );
           }).toList(),

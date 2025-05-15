@@ -35,8 +35,7 @@ class OnboardingPage extends StatelessWidget {
             clipBehavior: Clip.none, // Allow elements to overflow
             alignment: Alignment.center,
             children: [
-              // Main image container with gradient overlay
-              Container(
+               Container(
                     width: animationSize,
                     height: animationSize + 90,
                     decoration: BoxDecoration(
@@ -44,9 +43,11 @@ class OnboardingPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(24),
                       boxShadow: [
                         BoxShadow(
-                          color: Theme.of(context).shadowColor.withAlpha(100),
-                          blurRadius: 15,
-                          offset: const Offset(0, 8),
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withAlpha(100),
+                          blurRadius: 8,
+                          offset: const Offset(0, 5),
                         ),
                       ],
                     ),
@@ -185,10 +186,11 @@ class OnboardingPage extends StatelessWidget {
   }
 
   Widget textChips(BuildContext context, String text, Color textColor) {
+    var theme = Theme.of(context);
     return Container(
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary.withAlpha(255),
+            color: theme.colorScheme.primary.withAlpha(255),
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
@@ -200,8 +202,8 @@ class OnboardingPage extends StatelessWidget {
           ),
           child: Text(
             text,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: textColor,
+            style: theme.textTheme.titleLarge?.copyWith(
+              color: theme.colorScheme.surface,
               fontWeight: FontWeight.bold,
               letterSpacing: 0.5,
             ),

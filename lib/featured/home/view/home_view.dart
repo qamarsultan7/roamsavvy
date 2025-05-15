@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:roamsavvy/featured/home/view/widgets/location_bottom_sheet.dart';
 import '../../../shared/components/custom_bottom_navbar.dart';
 import 'widgets/cover_heading_widget.dart';
 import 'widgets/expandable_card_container.dart';
@@ -43,7 +42,6 @@ class HomeView extends StatelessWidget {
               ),
             ),
 
-            // Scrollable list of restaurants
             SliverList(
               delegate: SliverChildBuilderDelegate((context, index) {
                 return ExpandableRestaurantCard(
