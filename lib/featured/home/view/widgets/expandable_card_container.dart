@@ -67,7 +67,6 @@ class _ExpandableRestaurantCardState extends State<ExpandableRestaurantCard>
       child: Card(
         margin: EdgeInsets.zero,
         elevation: 8,
-        shadowColor: Theme.of(context).colorScheme.onSurface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         clipBehavior: Clip.antiAlias,
         child: GestureDetector(

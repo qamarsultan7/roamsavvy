@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:roamsavvy/featured/home/view/home_view.dart';
+import 'package:roamsavvy/featured/home/view/home_screen.dart';
 import 'package:roamsavvy/featured/onboarding/view/onboarding_view.dart';
 import 'package:roamsavvy/featured/splash/view/splash_view.dart';
 import 'route_name.dart';
@@ -16,7 +16,7 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const OnboardingView());
 
       case RouteName.home:
-        return MaterialPageRoute(builder: (_) => const HomeView());
+        return MaterialPageRoute(builder: (_) => const HomeScreen());
 
       // case RouteName.medical:
       //   return MaterialPageRoute(builder: (_) => const MedicalPage());
