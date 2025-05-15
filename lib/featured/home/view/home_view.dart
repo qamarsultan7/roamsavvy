@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:roamsavvy/featured/home/view/widgets/expanded_items_card.dart';
 import 'package:roamsavvy/featured/home/view/widgets/location_bottom_sheet.dart';
 
 class HomeView extends StatelessWidget {
@@ -23,58 +24,58 @@ class HomeView extends StatelessWidget {
       appBar: _buildAppBar(context),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
-        child: Column(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(top: 20),
-              decoration: BoxDecoration(
-                image: const DecorationImage(
-                  image: AssetImage('assets/images/bg.jpeg'),
-                  fit: BoxFit.cover,
-                ),
-                color: Theme.of(context).colorScheme.secondary,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              height: size.height * .25,
-              width: double.infinity,
-              child: Container(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.only(top: 20),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.black.withOpacity(0.1),
-                      Colors.black.withOpacity(0.6),
-                    ],
+                  image: const DecorationImage(
+                    image: AssetImage('assets/images/bg.jpeg'),
+                    fit: BoxFit.cover,
                   ),
+                  color: Theme.of(context).colorScheme.secondary,
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                child: Center(
-                  child: Text(
-                    'data',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
+                height: size.height * .25,
+                width: double.infinity,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.black.withOpacity(0.1),
+                        Colors.black.withOpacity(0.6),
+                      ],
+                    ),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'data',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-
-            Container(
-              margin: const EdgeInsets.only(top: 20),
-              decoration: BoxDecoration(),
-              height: size.height * .25,
-              width: double.infinity,
-              child: Center(
-                child: Text(
-                  'data',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                ),
+          
+              ExpandableRestaurantCard(
+                imageUrl: 'assets/images/bg.jpeg',
+                name: 'McDonald\'s',
+                rating: 4.2,
+                cuisine: 'Fast Food',
+                address: '123 Main Street, New York',
+                isOpen: true,
+                priceLevel: 1,
+                deliveryTime: 15,
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
