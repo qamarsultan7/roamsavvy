@@ -15,6 +15,13 @@ class NearbySearchResponse {
           .toList(),
     );
   }
+  
+  Map<String, dynamic> toJson() {
+    return {
+      'next_page_token': nextPageToken,
+      'results': results.map((place) => place.toJson()).toList(),
+    };
+  }
 }
 
 class FoodPlace {
@@ -55,5 +62,18 @@ class FoodPlace {
       userRatingsTotal: json['user_ratings_total'] ?? 0,
       vicinity: json['vicinity'] ?? '',
     );
+  }
+  
+  Map<String, dynamic> toJson() {
+    return {
+      'place_id': placeId,
+      'name': name,
+      'location': {'lat': lat, 'lng': lng},
+      'is_open': isOpen,
+      'photo_references': photoReferences,
+      'rating': rating,
+      'user_ratings_total': userRatingsTotal,
+      'vicinity': vicinity,
+    };
   }
 }

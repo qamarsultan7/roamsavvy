@@ -30,7 +30,7 @@ class OnboardingPage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
-          height: screenHeight * 0.55, // More responsive height
+          height: screenHeight * 0.5, // More responsive height
           child: Stack(
             clipBehavior: Clip.none, // Allow elements to overflow
             alignment: Alignment.center,
@@ -177,9 +177,9 @@ class OnboardingPage extends StatelessWidget {
           ),
         ),
 
-        const SizedBox(height: 25),
+        const SizedBox(height: 15),
         DotIndicator(currentIndex: currentIndex, length: length),
-        const SizedBox(height: 30),
+        const SizedBox(height: 10),
         _buildTextContent(context),
       ],
     );

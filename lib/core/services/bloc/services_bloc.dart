@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -21,21 +22,48 @@ class ServicesBloc extends Bloc<ServicesEvent, ServicesState> {
     final status = await Permission.location.request();
 
     if (status.isGranted) {
+      emit(state.copyWith(status: LocationStatus.granted));
       try {
         final position = await Geolocator.getCurrentPosition();
-        final placemarks = await placemarkFromCoordinates(
-          position.latitude,
-          position.longitude,
+        Placemark? place;
+        try {
+          final placemarks = await placemarkFromCoordinates(
+            position.latitude,
+            position.longitude,
+          );
+          place = placemarks.first;
+        } on PlatformException {
+          emit(
+            state.copyWith(
+              status: LocationStatus.error,
+              errorMessage: "Check Your Internet Connection",
+            ),
+          );
+          return;
+        } catch (e) {
+          emit(
+            state.copyWith(
+              status: LocationStatus.error,
+              errorMessage:
+                  "Unexpected error during geocoding: ${e.toString()}",
+            ),
+          );
+          return;
+        }
+
+        emit(state.copyWith(status: LocationStatus.granted, address: place));
+      } on PlatformException catch (e) {
+        emit(
+          state.copyWith(
+            status: LocationStatus.error,
+            errorMessage: "PlatformException: ${e.message}",
+          ),
         );
-        final place = placemarks.first;
-        final address =
-            "${place.street}, ${place.locality}, ${place.administrativeArea}, ${place.country}";
-        emit(state.copyWith(status: LocationStatus.granted, address: address));
       } catch (e) {
         emit(
           state.copyWith(
             status: LocationStatus.error,
-            errorMessage: e.toString(),
+            errorMessage: "Unexpected error: ${e.toString()}",
           ),
         );
       }

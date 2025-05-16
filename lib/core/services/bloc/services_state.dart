@@ -11,7 +11,7 @@ enum LocationStatus {
 
 class ServicesState extends Equatable {
   final LocationStatus status;
-  final String? address;
+  final Placemark? address;
   final String? errorMessage;
 
   const ServicesState({required this.status, this.address, this.errorMessage});
@@ -21,7 +21,7 @@ class ServicesState extends Equatable {
 
   ServicesState copyWith({
     LocationStatus? status,
-    String? address,
+    Placemark? address,
     String? errorMessage,
   }) {
     return ServicesState(

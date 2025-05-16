@@ -41,8 +41,8 @@ dependencies:
   readmore:
   fl_chart: 
   dio: 
-  geolocator: 
-  geocoding: 
+  geolocator: ^14.0.0 
+  geocoding: ^3.0.0 
   permission_handler: 
 
 dev_dependencies:

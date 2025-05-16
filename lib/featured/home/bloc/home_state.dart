@@ -8,10 +8,12 @@ class HomeState extends Equatable {
   final bool isExpanded;
   final int currentHeadingIndex;
   final bool isHeadingAnimating;
+  final Apiresponse? apiresponse;
   
   const HomeState({
     this.isEditing = false,
     this.isExpanded = false,
+    this.apiresponse,
     this.currentLocation = '',
     this.currentHeadingIndex = 0,
     this.isHeadingAnimating = false,
@@ -19,12 +21,14 @@ class HomeState extends Equatable {
 
   HomeState copyWith({
     bool? isEditing, 
+    Apiresponse? apiresponse,
     String? currentLocation,
     bool? isExpanded,
     int? currentHeadingIndex,
     bool? isHeadingAnimating,
   }) {
     return HomeState(
+      apiresponse: apiresponse ?? this.apiresponse,
       isExpanded: isExpanded ?? this.isExpanded,
       isEditing: isEditing ?? this.isEditing,
       currentLocation: currentLocation ?? this.currentLocation,
@@ -34,5 +38,5 @@ class HomeState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [isEditing, currentLocation, isExpanded, currentHeadingIndex, isHeadingAnimating];
+  List<Object?> get props => [apiresponse,isEditing, currentLocation, isExpanded, currentHeadingIndex, isHeadingAnimating];
 }

@@ -23,3 +23,17 @@ class RotateHeadingEvent extends HomeEvent {
 class ToggleExpandedWidget extends HomeEvent {
   const ToggleExpandedWidget();
 }
+
+class GetFoodPointsDataEvent extends HomeEvent {
+  
+  const GetFoodPointsDataEvent();
+}
+
+class GetNearByFoodPointsEvent extends HomeEvent {
+  final String lat;
+  final String lng;
+  const GetNearByFoodPointsEvent({
+    required this.lat,
+    required this.lng,
+  });
+}
