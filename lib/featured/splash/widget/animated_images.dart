@@ -137,8 +137,8 @@ class AnimatedImageItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-final color=Theme.of(context).colorScheme.onSurface;
-    final Widget imageWidget = usePolaroidStyle
+final color=Theme.of(context).colorScheme.secondary;
+   final Widget imageWidget = usePolaroidStyle
         ? Container(
             width: size,
             height: size,

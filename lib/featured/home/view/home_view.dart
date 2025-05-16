@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../../../shared/components/custom_bottom_navbar.dart';
 import 'widgets/cover_heading_widget.dart';
 import 'widgets/expandable_card_container.dart';
 
@@ -11,8 +10,7 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      extendBody: true,
+    
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
         child: CustomScrollView(
@@ -65,7 +63,7 @@ class HomeView extends StatelessWidget {
         ),
       ),
 
-      bottomNavigationBar: CustomBottomNavbar(),
+     
     );
   }
 }

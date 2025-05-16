@@ -56,7 +56,6 @@ class AnimatedLettersDrop extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final text = 'ROAMSAVVY';
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children:

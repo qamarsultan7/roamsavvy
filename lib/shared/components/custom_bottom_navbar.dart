@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:roamsavvy/app/routes/route_name.dart';
 import 'package:roamsavvy/shared/bloc/bottom_nav_bar_bloc.dart';
 
 class CustomBottomNavbar extends StatefulWidget {
@@ -38,6 +39,10 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
 
   void _onTabSelected(int newIndex) {
     // Dispatch event to the BLoC
+    if(newIndex==2){
+      Navigator.pushNamed(context, RouteName.settings);
+      return; 
+    }
     context.read<BottomNavBarBloc>().add(
       BottomNavBarItemTapped(index: newIndex)
     );

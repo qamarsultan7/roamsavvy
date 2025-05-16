@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:roamsavvy/featured/home/view/home_view.dart';
+import 'package:roamsavvy/featured/search/view/search_view.dart';
+import 'package:roamsavvy/shared/bloc/bottom_nav_bar_bloc.dart';
+import '../../../shared/components/share_widgets.dart';
 import 'widgets/location_bottom_sheet.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -19,8 +23,39 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      extendBody: true,
       appBar: _buildAppBar(context),
-      body: IndexedStack(children: [HomeView()]),
+      body: BlocBuilder<BottomNavBarBloc, BottomNavBarState>(
+        buildWhen:
+            (previous, current) =>
+                previous.selectedIndex != current.selectedIndex,
+        builder: (context, state) {
+          final List<Widget> pages = [const HomeView(), const SearchView()];
+          return AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            switchInCurve: Curves.easeInOut,
+            switchOutCurve: Curves.easeInOut,
+            transitionBuilder: (Widget child, Animation<double> animation) {
+              return FadeTransition(
+                opacity: animation,
+                child: SlideTransition(
+                  position: Tween<Offset>(
+                    begin: Offset(state.selectedIndex == 0 ? -0.2 : 0.2, 0),
+                    end: Offset.zero,
+                  ).animate(animation),
+                  child: child,
+                ),
+              );
+            },
+            child: KeyedSubtree(
+              key: ValueKey<int>(state.selectedIndex),
+              child: pages[state.selectedIndex],
+            ),
+          ).animate().fadeIn();
+        },
+      ),
+      bottomNavigationBar: CustomBottomNavbar(),
     );
   }
 

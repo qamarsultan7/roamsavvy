@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:roamsavvy/featured/home/bloc/home_bloc.dart';
 import 'package:roamsavvy/shared/components/custom_main_button.dart';
+import 'package:roamsavvy/shared/components/custom_search_field.dart';
 
 class LocationBottomSheet extends StatefulWidget {
   const LocationBottomSheet({super.key});
@@ -116,33 +117,25 @@ class _LocationBottomSheetState extends State<LocationBottomSheet> {
             duration: const Duration(milliseconds: 300),
             child:
                 state.isEditing
-                    ? TextField(
-                      keyboardAppearance: Theme.of(context).brightness,
-                      key: const ValueKey('textField'),
-                      controller: _locationController,
-                      focusNode: _focusNode,
-                      decoration: InputDecoration(
+                    ? CustomSearchField(
+                        key: const ValueKey('textField'),
+                        controller: _locationController,
+                        focusNode: _focusNode,
                         hintText: "Enter location...",
-                        suffixIcon: IconButton(
-                          icon: const Icon(Icons.clear),
-                          onPressed: () {
-                            _locationController.clear();
-                          },
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      onSubmitted: (value) {
-                        _focusNode.unfocus();
-                        final homeBloc = context.read<HomeBloc>();
-                        homeBloc.add(ToggleIsEditingEvent());
-                        // Handle submission and toggle editing state
-                        if (value.isNotEmpty) {
-                          // Add your location saving logic here
-                        }
-                      },
-                    )
+                        prefixIcon: const Icon(Icons.location_on),
+                        onSubmitted: (value) {
+                          _focusNode.unfocus();
+                          final homeBloc = context.read<HomeBloc>();
+                          homeBloc.add(ToggleIsEditingEvent());
+                          // Handle submission and toggle editing state
+                          if (value.isNotEmpty) {
+                            // Add your location saving logic here
+                          }
+                        },
+                        onClear: () {
+                          // Additional clear behavior if needed
+                        },
+                      )
                     : Container(
                       key: const ValueKey('locationDisplay'),
                       padding: const EdgeInsets.symmetric(
