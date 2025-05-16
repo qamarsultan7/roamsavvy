@@ -11,15 +11,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SettingsBloc, SettingsState>(
-      buildWhen: (previous, current) => 
-          previous.themeMode != current.themeMode,
+      buildWhen: (previous, current) => previous.themeMode != current.themeMode,
       builder: (context, state) {
         return MaterialApp(
           title: 'Traveler Guide',
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: ThemeMode.light,
-          initialRoute: RouteName.details,
+          initialRoute: RouteName.splash,
           onGenerateRoute: RouteGenerator.generateRoute,
           debugShowCheckedModeBanner: false,
           builder: (context, child) {

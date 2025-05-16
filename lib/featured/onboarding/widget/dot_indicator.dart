@@ -17,13 +17,13 @@ class DotIndicator extends StatelessWidget {
       children: List.generate(
         length,
         (index) => AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 500),
           margin: const EdgeInsets.only(right: 5),
           height: 8,
           width: currentIndex == index ? 24 : 8,
           decoration: BoxDecoration(
             color: currentIndex == index 
-                ? Theme.of(context).primaryColor 
+                ? Theme.of(context).colorScheme.secondary 
                 : Colors.grey.shade300,
             borderRadius: BorderRadius.circular(4),
           ),

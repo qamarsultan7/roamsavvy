@@ -62,7 +62,7 @@ class _OnboardingViewState extends State<OnboardingView> {
           body: LayoutBuilder(
             builder: (context, constraints) {
               return Padding(
-                padding: const EdgeInsets.only(top: 25),
+                padding: const EdgeInsets.only(top: 40),
                 child: Column(
                   children: [
                     Stack(

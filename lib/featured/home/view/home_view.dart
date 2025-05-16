@@ -68,7 +68,7 @@ class HomeView extends StatelessWidget {
   }
 }
 
-// Custom delegate for the sticky header
+
 class _StickyHeaderDelegate extends SliverPersistentHeaderDelegate {
   final Widget child;
   final double maxHeight;

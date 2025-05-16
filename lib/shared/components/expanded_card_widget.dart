@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../app/routes/route_name.dart';
 import 'custom_main_button.dart' show CustomMainButton;
 
 class RestaurantCardExpanded extends StatelessWidget {
@@ -124,7 +125,12 @@ class RestaurantCardExpanded extends StatelessWidget {
           // See More Button
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 50.0),
-            child: CustomMainButton(label: 'See More', onPressed: () {}),
+            child: CustomMainButton(
+              label: 'See More',
+              onPressed: () {
+                Navigator.of(context).pushNamed(RouteName.details);
+              },
+            ),
           ),
         ],
       ),

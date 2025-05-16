@@ -53,19 +53,15 @@ class _CustomMainButtonState extends State<CustomMainButton>
     final backgroundColor = widget.backgroundColor ?? theme.colorScheme.primary;
     final textColor = widget.textColor ?? theme.colorScheme.onPrimary;
 
-    return InkWell(
-      onTap: _handleTap,
-      splashColor: Colors.transparent,
-      highlightColor: Colors.transparent,
-      child: SizedBox(
-        width: double.infinity,
-        height: widget.height,
-        child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              decoration: BoxDecoration(
-                color: backgroundColor,
-                borderRadius: BorderRadius.circular(8),
-              ),
+    return SizedBox(
+      width: double.infinity,
+      height: widget.height,
+      child: Material(
+        color: backgroundColor, // <- Background color applied here
+        borderRadius: BorderRadius.circular(8),
+        child: InkWell(
+              onTap: _handleTap,
+              splashColor: theme.scaffoldBackgroundColor.withAlpha(80),
               child: Center(
                 child: FittedBox(
                   child: Text(
@@ -80,12 +76,11 @@ class _CustomMainButtonState extends State<CustomMainButton>
             )
             .animate(controller: _controller)
             .scale(
-              end: const Offset(1.0, 1.0),
               begin: const Offset(0.95, 0.95),
+              end: const Offset(1.0, 1.0),
               curve: Curves.easeInOut,
               duration: 400.ms,
-            )
-            .then(delay: 400.ms),
+            ),
       ),
     );
   }

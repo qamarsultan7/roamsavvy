@@ -19,3 +19,7 @@ class CompleteHeadingAnimationEvent extends HomeEvent {
 class RotateHeadingEvent extends HomeEvent {
   const RotateHeadingEvent();
 }
+
+class ToggleExpandedWidget extends HomeEvent {
+  const ToggleExpandedWidget();
+}
