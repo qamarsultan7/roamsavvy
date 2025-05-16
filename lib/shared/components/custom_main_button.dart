@@ -61,16 +61,19 @@ class _CustomMainButtonState extends State<CustomMainButton>
         width: double.infinity,
         height: widget.height,
         child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               decoration: BoxDecoration(
                 color: backgroundColor,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Center(
-                child: Text(
-                  widget.label,
-                  style: theme.textTheme.headlineMedium?.copyWith(
-                    color: textColor,
-                    fontWeight: FontWeight.bold,
+                child: FittedBox(
+                  child: Text(
+                    widget.label,
+                    style: theme.textTheme.headlineMedium?.copyWith(
+                      color: textColor,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),

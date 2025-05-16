@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'share_widgets.dart';
+
 class RestaurantCardCollapsed extends StatelessWidget {
   final String imageUrl;
   final String name;
@@ -77,24 +79,7 @@ class RestaurantCardCollapsed extends StatelessWidget {
                     ],
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 4,
-                  ),
-                  decoration: BoxDecoration(
-                    color: isOpen ? Colors.green : Colors.red,
-                    borderRadius: BorderRadius.circular(7),
-                  ),
-                  child: Text(
-                    isOpen ? 'Open' : 'Closed',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                    ),
-                  ),
-                ),
+                IsOpenOrClosedWidegt(isOpen: isOpen),
               ],
             ),
             const SizedBox(height: 4),
