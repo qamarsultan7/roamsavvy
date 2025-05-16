@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'widgets/cover_heading_widget.dart';
 import '../../../shared/components/expandable_card_container.dart';
+import '../bloc/home_bloc.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -10,7 +12,6 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-    
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
         child: CustomScrollView(
@@ -40,34 +41,29 @@ class HomeView extends StatelessWidget {
               ),
             ),
 
-            SliverList(
-              delegate: SliverChildBuilderDelegate((context, index) {
-                return ExpandableRestaurantCard(
-                      imageUrl: 'assets/images/image_not_available.jpeg',
-                      name: 'McDonald\'s',
-                      rating: 4.2,
-                      cuisine: 'Fast Food',
-                      address: '123 Main Street, New York',
-                      isOpen: true,
-                      priceLevel: 1,
-                      deliveryTime: 15,
-                    )
-                    .animate(delay: ((index + 1) * 50).ms)
-                    .scale(
-                      begin: const Offset(0.8, 0.8),
-                      end: const Offset(1, 1),
-                    );
-              }, childCount: 15),
+            BlocBuilder<HomeBloc, HomeState>(
+              builder: (context, state) {
+                return SliverList(
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    final restaurant = state.restaurants[index];
+                    return ExpandableRestaurantCard(
+                          foodPointsDataModel: restaurant,
+                        )
+                        .animate(delay: ((index + 1) * 50).ms)
+                        .scale(
+                          begin: const Offset(0.8, 0.8),
+                          end: const Offset(1, 1),
+                        );
+                  }, childCount: state.restaurants.length),
+                );
+              },
             ),
           ],
         ),
       ),
-
-     
     );
   }
 }
-
 
 class _StickyHeaderDelegate extends SliverPersistentHeaderDelegate {
   final Widget child;

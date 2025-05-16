@@ -1,24 +1,18 @@
 import 'package:flutter/material.dart';
-
-import '../../app/routes/route_name.dart';
+import 'package:roamsavvy/featured/detailspage/view/details_view.dart';
+import 'package:roamsavvy/featured/home/models/food_points_data_model.dart';
 import 'custom_main_button.dart' show CustomMainButton;
 
 class RestaurantCardExpanded extends StatelessWidget {
-  final double rating;
-  final String address;
-  final int priceLevel;
-  final int deliveryTime;
+  final FoodPointsDataModel restaurant;
 
   const RestaurantCardExpanded({
     super.key,
-    required this.rating,
-    required this.address,
-    required this.priceLevel,
-    required this.deliveryTime,
+    required this.restaurant,
   });
 
   String _getPriceString() {
-    return '\$' * priceLevel;
+    return '\$' * restaurant.priceLevel;
   }
 
   @override
@@ -41,7 +35,7 @@ class RestaurantCardExpanded extends StatelessWidget {
                       const Icon(Icons.star, color: Colors.amber, size: 20),
                       const SizedBox(width: 4),
                       Text(
-                        rating.toString(),
+                        restaurant.rating.toString(),
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
@@ -91,7 +85,7 @@ class RestaurantCardExpanded extends StatelessWidget {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        '$deliveryTime min',
+                        '${restaurant.deliveryTime} min',
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -115,7 +109,7 @@ class RestaurantCardExpanded extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Expanded(
-                child: Text(address, style: const TextStyle(fontSize: 14)),
+                child: Text(restaurant.address, style: const TextStyle(fontSize: 14)),
               ),
             ],
           ),
@@ -128,7 +122,11 @@ class RestaurantCardExpanded extends StatelessWidget {
             child: CustomMainButton(
               label: 'See More',
               onPressed: () {
-                Navigator.of(context).pushNamed(RouteName.details);
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => DetailsView(
+                    restaurant: restaurant,
+                  ),
+                ));
               },
             ),
           ),

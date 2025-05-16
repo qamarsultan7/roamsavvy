@@ -28,7 +28,7 @@ class _SearchViewState extends State<SearchView> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(
@@ -40,22 +40,6 @@ class _SearchViewState extends State<SearchView> {
               hintText: 'Search destinations...',
               onSubmitted: (value) {
                 // Handle search submission
-              },
-            ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: 15,
-              physics: BouncingScrollPhysics(),
-              itemBuilder: (context, index) {
-                return ListTile(
-                  leading: const Icon(Icons.place),
-                  title: Text('Destination ${index + 1}'),
-                  subtitle: Text('Description for destination ${index + 1}'),
-                  onTap: () {
-                    // Handle destination selection
-                  },
-                );
               },
             ),
           ),

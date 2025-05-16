@@ -1,8 +1,9 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:roamsavvy/featured/home/models/food_points_data_model.dart';
 
 class ReviewInsightsChart extends StatefulWidget {
-  final Map<String, double> insights;
+  final ReviewInsights insights;
 
   const ReviewInsightsChart({super.key, required this.insights});
 
@@ -16,8 +17,8 @@ class _ReviewInsightsChartState extends State<ReviewInsightsChart> {
   @override
   Widget build(BuildContext context) {
     final colors = [Colors.green, Colors.orange, Colors.red, Colors.blue, Colors.purple];
-    final labels = widget.insights.keys.toList();
-    final values = widget.insights.values.toList();
+    final labels = widget.insights.insights.keys.toList();
+    final values = widget.insights.insights.values.toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,12 +43,12 @@ class _ReviewInsightsChartState extends State<ReviewInsightsChart> {
                   });
                 },
               ),
-              sections: List.generate(widget.insights.length, (i) {
+              sections: List.generate(widget.insights.insights.length, (i) {
                 final isSelected = touchedIndex == i;
                 return PieChartSectionData(
                   color: colors[i % colors.length],
-                  value: values[i],
-                  title: '${values[i].toInt()}%',
+                  value: values[i].toDouble(),
+                  title: '${values[i]}%',
                   radius: isSelected ? 65 : 50,
                   titleStyle: const TextStyle(
                     fontWeight: FontWeight.bold,
@@ -63,7 +64,7 @@ class _ReviewInsightsChartState extends State<ReviewInsightsChart> {
         const SizedBox(height: 8),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(widget.insights.length, (i) {
+          children: List.generate(widget.insights.insights.length, (i) {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Row(

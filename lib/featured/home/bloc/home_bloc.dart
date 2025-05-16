@@ -9,6 +9,8 @@ import 'package:roamsavvy/data/response/api_response.dart';
 import 'package:roamsavvy/featured/home/models/food_place_model.dart';
 import 'package:roamsavvy/featured/home/models/nearby_places_response.dart';
 
+import '../models/food_points_data_model.dart';
+
 part 'home_event.dart';
 part 'home_state.dart';
 
@@ -22,6 +24,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<RotateHeadingEvent>(_onRotateHeading);
     on<ToggleExpandedWidget>(_onToggleExpandedWidget);
     on<GetNearByFoodPointsEvent>(_getFoodNearByPoints);
+    on<GetFoodPointsDataEvent>(_getFoodPointsData);
     add(const RotateHeadingEvent());
   }
 
@@ -93,9 +96,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final googleResponse = await baseApiServices.getGetApiResponse(
         uri.toString(),
       );
-
+      final parsedJson = jsonDecode(googleResponse);
       // 2. Parse Google Maps response
-      final places = NearbySearchResponse.fromJson(googleResponse);
+      final places = NearbySearchResponse.fromJson(parsedJson);
 
       // 4. Call Gemini (with proper implementation)
       final geminiResponse = await sendToGeminiAPI(places);
@@ -305,6 +308,19 @@ Cover all food points returned by Google Maps, regardless of query variation. ${
     } catch (e) {
       print('Error calling Gemini API: ${e.toString()}');
       throw Exception('Failed to call Gemini API: ${e.toString()}');
+    }
+  }
+
+  Future<void> _getFoodPointsData(
+    GetFoodPointsDataEvent event,
+    Emitter<HomeState> emit,
+  ) async {
+    emit(state.copyWith(apiresponse: Apiresponse.loading()));
+    try {
+      final response =FoodPointsDataModel.getSampleRestaurantsFromIslamabad();
+      emit(state.copyWith(restaurants: response));
+    } catch (e) {
+      emit(state.copyWith(apiresponse: Apiresponse.error(e.toString())));
     }
   }
 

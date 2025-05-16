@@ -2,30 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../shared/components/share_widgets.dart';
 import 'widgets/widgets.dart';
+import '../../home/models/food_points_data_model.dart';
 
 class DetailsView extends StatelessWidget {
-  final String imageUrl;
-  final String name;
-  final double rating;
-  final String cuisine;
-  final String address;
-  final bool isOpen;
-  final int priceLevel;
-  final int deliveryTime;
+  final FoodPointsDataModel restaurant;
 
-  const DetailsView({
-    super.key,
-    this.imageUrl = 'assets/images/image_not_available.jpeg',
-    this.name = 'Restaurant Name',
-    this.rating = 4.0,
-    this.cuisine = 'Cuisine Type',
-    this.address = 'Restaurant Address',
-    this.isOpen = true,
-    this.priceLevel = 2,
-    this.deliveryTime = 20,
-  });
+  const DetailsView({super.key, required this.restaurant});
 
-  String _getPriceString() => '\$' * priceLevel;
+  String _getPriceString() => '\$' * restaurant.priceLevel;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +34,7 @@ class DetailsView extends StatelessWidget {
                   collapseMode: CollapseMode.pin,
                   centerTitle: true,
                   title: Text(
-                    name,
+                    restaurant.name,
                     style: theme.textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -59,7 +43,7 @@ class DetailsView extends StatelessWidget {
                   background: Stack(
                     fit: StackFit.expand,
                     children: [
-                      Image.asset('assets/images/1.jpg', fit: BoxFit.cover),
+                      Image.asset(restaurant.imageUrl, fit: BoxFit.cover),
                       Container(
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
@@ -89,13 +73,13 @@ class DetailsView extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            cuisine,
+                            restaurant.cuisine,
                             style: theme.textTheme.headlineMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
                           ).animate().fadeIn(duration: 400.ms).slideX(),
                           Text(
-                            '~30 mins away',
+                            '~${restaurant.deliveryTime} mins away',
                             style: theme.textTheme.bodyMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -111,7 +95,7 @@ class DetailsView extends StatelessWidget {
                               const Icon(Icons.star, color: Colors.amber),
                               const SizedBox(width: 4),
                               Text(
-                                rating.toString(),
+                                restaurant.rating.toString(),
                                 style: theme.textTheme.titleMedium?.copyWith(
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -122,7 +106,7 @@ class DetailsView extends StatelessWidget {
                             _getPriceString(),
                             style: theme.textTheme.titleMedium,
                           ),
-                          IsOpenOrClosedWidegt(isOpen: isOpen),
+                          IsOpenOrClosedWidegt(isOpen: restaurant.isOpen),
                         ],
                       ),
                     ],
@@ -131,24 +115,16 @@ class DetailsView extends StatelessWidget {
               ),
               SliverList(
                 delegate: SliverChildListDelegate([
-                  MainFeaturesSection(
-                    features: const [
-                      'Veg',
-                      'Meal',
-                      'Halal',
-                      'Cafe',
-                      'Bakery',
-                      'Breakfast',
-                      'Outdoor Seating',
-                      'WiFi',
-                    ],
-                  ),
+                  MainFeaturesSection(features: restaurant.features),
                   InfoSection(
                     title: 'Location',
                     icon: Icons.location_on,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: Text(address, style: theme.textTheme.bodyLarge),
+                      child: Text(
+                        restaurant.address,
+                        style: theme.textTheme.bodyLarge,
+                      ),
                     ),
                   ),
                   InfoSection(
@@ -157,7 +133,7 @@ class DetailsView extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: Text(
-                        'Estimated delivery time: $deliveryTime minutes',
+                        'Estimated delivery time: ${restaurant.deliveryTime} minutes',
                         style: theme.textTheme.bodyLarge,
                       ),
                     ),
@@ -167,124 +143,51 @@ class DetailsView extends StatelessWidget {
                     icon: Icons.access_time,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        TimeRow('Monday - Friday', '9:00 AM - 10:00 PM'),
-                        TimeRow('Saturday', '10:00 AM - 11:00 PM'),
-                        TimeRow('Sunday', '10:00 AM - 9:00 PM'),
-                      ],
+                      children:
+                          restaurant.openingHours
+                              .map((hours) => TimeRow(hours.day, hours.time))
+                              .toList(),
                     ),
                   ),
                   InfoSection(
                     title: 'Popular Items',
                     icon: Icons.restaurant_menu,
                     child: Column(
-                      children: [
-                        MenuItemCard(
-                          name: 'Signature Burger',
-                          price: '9.99',
-                          description:
-                              'Juicy beef patty with cheese and special sauce',
-                        ),
-                        MenuItemCard(
-                          name: 'Deluxe Pizza',
-                          price: '14.99',
-                          description:
-                              'Topped with pepperoni, mushrooms and olives',
-                        ),
-                        MenuItemCard(
-                          name: 'House Salad',
-                          price: '7.99',
-                          description: 'Fresh greens with house dressing',
-                        ),
-                        seeAll(theme, 'See All'),
-                      ],
+                      children:
+                          restaurant.popularItems
+                              .map(
+                                (item) => MenuItemCard(
+                                  name: item.name,
+                                  price: item.price,
+                                  description: item.description,
+                                ),
+                              )
+                              .toList(),
                     ),
                   ),
-                  // --- AI Summary Section ---
                   InfoSection(
                     title: 'Review Insights',
                     icon: Icons.pie_chart,
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8.0),
-                      child: ReviewInsightsChart(
-                        insights: {
-                          'Must Try': 70,
-                          'Average': 20,
-                          'Bad Experience': 10,
-                        },
-                      ),
+                    child: ReviewInsightsChart(
+                      insights: restaurant.reviewInsights,
                     ),
                   ),
-                  const AISummarySection(),
                   InfoSection(
                     title: 'User Reviews',
                     icon: Icons.rate_review,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: Row(
-                            children: [
-                              Text(
-                                '4.2',
-                                style: theme.textTheme.headlineMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: theme.colorScheme.primary,
+                      children:
+                          restaurant.userReviews
+                              .map(
+                                (review) => ReviewItem(
+                                  name: review.name,
+                                  rating: review.rating,
+                                  date: review.date,
+                                  comment: review.comment,
                                 ),
-                              ),
-                              const SizedBox(width: 16),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: List.generate(
-                                      5,
-                                      (index) => Icon(
-                                        index < 4
-                                            ? Icons.star
-                                            : Icons.star_half,
-                                        color: Colors.amber,
-                                        size: 20,
-                                      ),
-                                    ),
-                                  ),
-                                  Text(
-                                    'Avg Rating from all over the Internet',
-                                    style: theme.textTheme.bodySmall,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Divider(),
-                        const ReviewItem(
-                          name: 'John Doe',
-                          rating: 5.0,
-                          date: '2 days ago',
-                          comment:
-                              'Great food and atmosphere! The burger was juicy and perfectly cooked. Will definitely come back again.',
-                        ),
-                        const Divider(),
-                        const ReviewItem(
-                          name: 'Sarah Johnson',
-                          rating: 4.0,
-                          date: '1 week ago',
-                          comment:
-                              'Good food but service was a bit slow. The pizza is worth the wait though!',
-                        ),
-                        const Divider(),
-                        const ReviewItem(
-                          name: 'Mike Smith',
-                          rating: 4.5,
-                          date: '2 weeks ago',
-                          comment:
-                              'Love their salads and the friendly staff. Prices are reasonable for the quality.',
-                        ),
-                        const SizedBox(height: 16),
-                        seeAll(theme, 'See All Reviews'),
-                      ],
+                              )
+                              .toList(),
                     ),
                   ),
                   const SizedBox(height: 30),
@@ -307,22 +210,6 @@ class DetailsView extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget seeAll(ThemeData theme, String text) {
-    return Align(
-      alignment: Alignment.center,
-      child: TextButton(
-        onPressed: () {},
-        child: Text(
-          text,
-          style: TextStyle(
-            color: theme.colorScheme.primary,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
       ),
     );
   }

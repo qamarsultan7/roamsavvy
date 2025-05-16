@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:roamsavvy/featured/home/models/food_points_data_model.dart';
 
 import 'share_widgets.dart';
 
 class RestaurantCardCollapsed extends StatelessWidget {
-  final String imageUrl;
-  final String name;
-  final String cuisine;
-  final bool isOpen;
+  final FoodPointsDataModel restaurant;
   final bool isExpanded;
 
   const RestaurantCardCollapsed({
     super.key,
-    required this.imageUrl,
-    required this.name,
-    required this.cuisine,
-    required this.isOpen,
+    required this.restaurant,
     required this.isExpanded,
   });
 
@@ -24,7 +19,10 @@ class RestaurantCardCollapsed extends StatelessWidget {
       height: 190,
       width: double.infinity,
       decoration: BoxDecoration(
-        image: DecorationImage(image: AssetImage(imageUrl), fit: BoxFit.cover),
+        image: DecorationImage(
+          image: AssetImage(restaurant.imageUrl),
+          fit: BoxFit.cover,
+        ),
       ),
       child: Container(
         decoration: BoxDecoration(
@@ -48,7 +46,7 @@ class RestaurantCardCollapsed extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        name,
+                        restaurant.name,
                         style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -63,7 +61,7 @@ class RestaurantCardCollapsed extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        cuisine,
+                        restaurant.cuisine,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 16,
@@ -79,7 +77,7 @@ class RestaurantCardCollapsed extends StatelessWidget {
                     ],
                   ),
                 ),
-                IsOpenOrClosedWidegt(isOpen: isOpen),
+                IsOpenOrClosedWidegt(isOpen: restaurant.isOpen),
               ],
             ),
             const SizedBox(height: 4),

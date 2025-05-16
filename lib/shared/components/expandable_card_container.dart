@@ -1,29 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:roamsavvy/featured/home/bloc/home_bloc.dart';
+import 'package:roamsavvy/featured/home/models/food_points_data_model.dart';
 import 'collapsed_card_widget.dart';
 import 'expanded_card_widget.dart';
 
 class ExpandableRestaurantCard extends StatefulWidget {
-  final String imageUrl;
-  final String name;
-  final double rating;
-  final String cuisine;
-  final String address;
-  final bool isOpen;
-  final int priceLevel;
-  final int deliveryTime;
-
+  final FoodPointsDataModel foodPointsDataModel;
   const ExpandableRestaurantCard({
     super.key,
-    required this.imageUrl,
-    required this.name,
-    required this.rating,
-    required this.cuisine,
-    required this.address,
-    required this.isOpen,
-    required this.priceLevel,
-    required this.deliveryTime,
+    required this.foodPointsDataModel,
   });
 
   @override
@@ -80,10 +66,7 @@ class _ExpandableRestaurantCardState extends State<ExpandableRestaurantCard>
               child: Column(
                 children: [
                   RestaurantCardCollapsed(
-                    imageUrl: widget.imageUrl,
-                    name: widget.name,
-                    cuisine: widget.cuisine,
-                    isOpen: widget.isOpen,
+                    restaurant: widget.foodPointsDataModel,
                     isExpanded: state.isExpanded,
                   ),
                   AnimatedBuilder(
@@ -95,10 +78,7 @@ class _ExpandableRestaurantCardState extends State<ExpandableRestaurantCard>
                           child: Opacity(
                             opacity: _controller.value,
                             child: RestaurantCardExpanded(
-                              rating: widget.rating,
-                              address: widget.address,
-                              priceLevel: widget.priceLevel,
-                              deliveryTime: widget.deliveryTime,
+                              restaurant: widget.foodPointsDataModel,
                             ),
                           ),
                         ),
