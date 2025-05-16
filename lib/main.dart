@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:roamsavvy/app/app.dart';
 import 'package:roamsavvy/featured/home/bloc/home_bloc.dart';
 import 'package:roamsavvy/featured/onboarding/bloc/onboarding_bloc.dart';
+import 'featured/settings/bloc/settings_bloc.dart';
 import 'shared/bloc/bottom_nav_bar_bloc.dart';
 
 
@@ -13,6 +14,9 @@ void main() {
       BlocProvider(create: (_)=>HomeBloc()),
       BlocProvider(
         create: (_) => BottomNavBarBloc(),
+      ),
+      BlocProvider(
+        create: (_) => SettingsBloc(),
       ),
       ],
       child: const MyApp(),

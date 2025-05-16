@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'widgets/cover_heading_widget.dart';
-import 'widgets/expandable_card_container.dart';
+import '../../../shared/components/expandable_card_container.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});

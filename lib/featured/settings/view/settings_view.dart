@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../bloc/settings_bloc.dart';
 
 class SettingsView extends StatefulWidget {
   const SettingsView({super.key});
@@ -8,81 +10,129 @@ class SettingsView extends StatefulWidget {
 }
 
 class _SettingsViewState extends State<SettingsView> {
-  // Theme mode selection
-  final ThemeMode _currentThemeMode = ThemeMode.system;
-  // Language selection (just UI)
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Settings'), elevation: 0),
-      body: ListView(
-        children: [
-          // Theme settings section
-          _buildSectionHeader('Theme Settings'),
-          _buildThemeSelector(),
+      appBar: AppBar(
+        title: const Text('Settings'),
+        elevation: 0,
+        backgroundColor: colorScheme.surface,
+        foregroundColor: colorScheme.onSurface,
+      ),
+      body: BlocBuilder<SettingsBloc, SettingsState>(
+        builder: (context, state) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Theme settings section
+                _buildSectionHeader('Theme Settings', theme),
+                _buildCard(child: _buildThemeSelector(state.themeMode, theme)),
 
-          const Divider(),
-
-          // Language settings section
-          _buildSectionHeader('Language Settings'),
-          _buildLanguageSelector(),
-        ],
+                const SizedBox(height: 20),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
 
-  Widget _buildSectionHeader(String title) {
+  Widget _buildSectionHeader(String title, ThemeData theme) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+      padding: const EdgeInsets.fromLTRB(8, 16, 8, 12),
       child: Text(
         title,
-        style: Theme.of(
-          context,
-        ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+        style: theme.textTheme.titleLarge?.copyWith(
+          fontWeight: FontWeight.bold,
+          color: theme.colorScheme.primary,
+        ),
       ),
     );
   }
 
-  Widget _buildThemeSelector() {
+  Widget _buildCard({required Widget child}) {
+    return Card(
+      elevation: 2,
+      margin: const EdgeInsets.only(bottom: 8),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: child,
+    );
+  }
+
+  Widget _buildThemeSelector(ThemeMode currentThemeMode, ThemeData theme) {
     return Column(
       children: [
-        RadioListTile<ThemeMode>(
-          title: const Text('Light Theme'),
-          secondary: const Icon(Icons.light_mode),
+        _buildThemeOption(
+          title: 'Light Theme',
+          icon: Icons.light_mode,
           value: ThemeMode.light,
-          groupValue: _currentThemeMode,
-          onChanged: (ThemeMode? value) {},
+          groupValue: currentThemeMode,
+          theme: theme,
         ),
-        RadioListTile<ThemeMode>(
-          title: const Text('Dark Theme'),
-          secondary: const Icon(Icons.dark_mode),
+        Divider(color: theme.colorScheme.onSurface.withOpacity(0.1)),
+        _buildThemeOption(
+          title: 'Dark Theme',
+          icon: Icons.dark_mode,
           value: ThemeMode.dark,
-          groupValue: _currentThemeMode,
-          onChanged: (ThemeMode? value) {},
+          groupValue: currentThemeMode,
+          theme: theme,
         ),
-        RadioListTile<ThemeMode>(
-          title: const Text('System Theme'),
-          secondary: const Icon(Icons.settings_system_daydream),
+        Divider(color: theme.colorScheme.onSurface.withOpacity(0.1)),
+        _buildThemeOption(
+          title: 'System Theme',
+          icon: Icons.settings_system_daydream,
           value: ThemeMode.system,
-          groupValue: _currentThemeMode,
-          onChanged: (ThemeMode? value) {},
+          groupValue: currentThemeMode,
+          theme: theme,
         ),
       ],
     );
   }
 
-  Widget _buildLanguageSelector() {
-    return RadioListTile<String>(
-      title: Text('language'),
-      value: 'language',
-      groupValue: 'language',
-      onChanged: (String? value) {},
+  Widget _buildThemeOption({
+    required String title,
+    required IconData icon,
+    required ThemeMode value,
+    required ThemeMode groupValue,
+    required ThemeData theme,
+  }) {
+    final isSelected = value == groupValue;
+    final colorScheme = theme.colorScheme;
+
+    return InkWell(
+      onTap: () {
+        context.read<SettingsBloc>().add(UpdateThemeEvent(value));
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: Row(
+          children: [
+            Icon(
+              icon,
+              color:
+                  isSelected
+                      ? colorScheme.primary
+                      : colorScheme.onSurface.withOpacity(0.6),
+            ),
+            const SizedBox(width: 16),
+            Text(
+              title,
+              style: theme.textTheme.bodyLarge?.copyWith(
+                color: isSelected ? colorScheme.primary : colorScheme.onSurface,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              ),
+            ),
+            const Spacer(),
+            if (isSelected)
+              Icon(Icons.check_circle, color: colorScheme.primary),
+          ],
+        ),
+      ),
     );
   }
 }

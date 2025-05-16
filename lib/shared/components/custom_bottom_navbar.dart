@@ -25,26 +25,26 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
     // Initialize the tab icons
     _tabIcons = [
       Icons.home_outlined,
-      Icons.explore_outlined,
-      Icons.person_outline,
+      Icons.search_outlined,
+      Icons.settings_outlined,
     ];
 
     // Set initial BLoC state if needed
     if (widget.selectedIndex != 0) {
       context.read<BottomNavBarBloc>().add(
-        BottomNavBarItemTapped(index: widget.selectedIndex)
+        BottomNavBarItemTapped(index: widget.selectedIndex),
       );
     }
   }
 
   void _onTabSelected(int newIndex) {
     // Dispatch event to the BLoC
-    if(newIndex==2){
+    if (newIndex == 2) {
       Navigator.pushNamed(context, RouteName.settings);
-      return; 
+      return;
     }
     context.read<BottomNavBarBloc>().add(
-      BottomNavBarItemTapped(index: newIndex)
+      BottomNavBarItemTapped(index: newIndex),
     );
 
     // Call the onTap callback if provided
@@ -54,6 +54,8 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<BottomNavBarBloc, BottomNavBarState>(
+      buildWhen: (previous, current) =>
+          previous.selectedIndex != current.selectedIndex,
       builder: (context, state) {
         final theme = Theme.of(context);
         final borderRadius = BorderRadius.circular(12);
@@ -93,7 +95,9 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
                       // Droplet background per tab
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(_tabIcons.length * 2 - 1, (index) {
+                        children: List.generate(_tabIcons.length * 2 - 1, (
+                          index,
+                        ) {
                           // Add spacing widgets between tabs
                           if (index.isOdd) {
                             return SizedBox(width: spacing);
@@ -144,7 +148,9 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
                       // Foreground icons
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(_tabIcons.length * 2 - 1, (index) {
+                        children: List.generate(_tabIcons.length * 2 - 1, (
+                          index,
+                        ) {
                           // Add spacing widgets between tabs
                           if (index.isOdd) {
                             return SizedBox(width: spacing);
@@ -158,7 +164,9 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
                             child: GestureDetector(
                               onTap: () => _onTabSelected(tabIndex),
                               child: Container(
-                                padding: const EdgeInsets.symmetric(vertical: 8),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 8,
+                                ),
                                 child: Center(
                                   child: Icon(
                                     _tabIcons[tabIndex],

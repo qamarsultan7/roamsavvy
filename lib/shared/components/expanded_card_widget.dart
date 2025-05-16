@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../shared/components/custom_main_button.dart'
-    show CustomMainButton;
+import 'custom_main_button.dart' show CustomMainButton;
 
 class RestaurantCardExpanded extends StatelessWidget {
   final double rating;
@@ -23,6 +22,7 @@ class RestaurantCardExpanded extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -48,9 +48,12 @@ class RestaurantCardExpanded extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const Text(
+                  Text(
                     'Rating',
-                    style: TextStyle(color: Colors.black54, fontSize: 12),
+                    style: TextStyle(
+                      color: theme.colorScheme.onSurface,
+                      fontSize: 12,
+                    ),
                   ),
                 ],
               ),
@@ -65,9 +68,12 @@ class RestaurantCardExpanded extends StatelessWidget {
                       fontSize: 16,
                     ),
                   ),
-                  const Text(
+                  Text(
                     'Price Range',
-                    style: TextStyle(color: Colors.black54, fontSize: 12),
+                    style: TextStyle(
+                      color: theme.colorScheme.onSurface,
+                      fontSize: 12,
+                    ),
                   ),
                 ],
               ),
@@ -77,25 +83,21 @@ class RestaurantCardExpanded extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.access_time,
-                        color: Colors.black87,
+                        color: theme.colorScheme.primary,
                         size: 18,
                       ),
                       const SizedBox(width: 4),
                       Text(
                         '$deliveryTime min',
-                        style: const TextStyle(
+                        style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
-                          fontSize: 16,
                         ),
                       ),
                     ],
                   ),
-                  const Text(
-                    'Delivery',
-                    style: TextStyle(color: Colors.black54, fontSize: 12),
-                  ),
+                  Text('Delivery', style: theme.textTheme.bodySmall),
                 ],
               ),
             ],
@@ -103,10 +105,13 @@ class RestaurantCardExpanded extends StatelessWidget {
 
           const SizedBox(height: 16),
 
-          // Address
           Row(
             children: [
-              const Icon(Icons.location_on, color: Colors.black87, size: 16),
+              Icon(
+                Icons.location_on,
+                color: theme.colorScheme.primary,
+                size: 16,
+              ),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(address, style: const TextStyle(fontSize: 14)),
