@@ -261,7 +261,7 @@ Cover all food points returned by Google Maps, regardless of query variation. ${
 
     try {
       final response = await baseApiServices.postApiResponse(
-        '$geminiEndpoint?key=AIzaSyA3ndujUhYZfA9q_puc5PZcg9Kkb6MFCp0',
+        '$geminiEndpoint?key=0',
         geminiRequestPayload,
       );
 
